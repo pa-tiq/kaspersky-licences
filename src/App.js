@@ -1,24 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Suspense } from 'react';
+import { Route, Routes, Navigate } from 'react-router-dom';
+import Layout from './components/MainHeader/Layout';
+import LicenceProvider from './store/LicenceProvider';
+import LoadingSpinner from './components/UI/LoadingSpinner/LoadingSpinner';
+
+const Home = React.lazy(() => import('./components/Home/Home'));
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Layout>
+      <Suspense
+        fallback={
+          <div className='centered'>
+            <LoadingSpinner />
+          </div>
+        }
+      >
+        <main>
+          <LicenceProvider>
+            <Routes>
+              <Route path='/' element={<Navigate to='/home' />} />
+              <Route path='/home' element={<Home />} />
+            </Routes>
+          </LicenceProvider>
+        </main>
+      </Suspense>
+    </Layout>
   );
 }
 
