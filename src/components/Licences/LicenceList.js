@@ -29,7 +29,7 @@ const LicenceList = (props) => {
       <LicenceItem 
         key={'Porcentagem'}
         title={'Porcentagem do total de 3000'}
-        qtd={(qtdTotal / 3000) * 100}
+        qtd={parseFloat((qtdTotal / 3000) * 100).toFixed(2)}
       />
       {expensesContent}
     </ul>
