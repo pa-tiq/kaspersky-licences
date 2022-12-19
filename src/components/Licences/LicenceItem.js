@@ -42,7 +42,7 @@ function LicenceItem(props){
   }
 
   const editTitleOnDoubleClick = (
-    <h2 onDoubleClick={showEditor}>
+    <h2>
         {
           edit ?
             <div id={props.id}>
