@@ -5,6 +5,7 @@
   padding: 1rem 1rem;
   margin: 1rem 0.5rem;
   background-color: #4b4b4b;
+  max-width: 200px;
 }
 
 .expense-item__description {
