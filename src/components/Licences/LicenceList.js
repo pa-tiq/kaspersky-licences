@@ -21,7 +21,6 @@ const LicenceList = (props) => {
 
   return (
     <ul className="expenses-list">
-      {expensesContent}
       <LicenceItem 
         key={'Qtd Total'}
         title={'Qtd Total'}
@@ -32,6 +31,7 @@ const LicenceList = (props) => {
         title={'Porcentagem do total de 3000'}
         qtd={(qtdTotal / 3000) * 100}
       />
+      {expensesContent}
     </ul>
   )
 }
