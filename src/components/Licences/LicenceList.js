@@ -14,7 +14,7 @@ const LicenceList = (props) => {
         qtdTotal += item['qtd licencas'];
         return (<LicenceItem
           key={item.OM}
-          title={item.OM === 'Managed devices' ? 'Servidor' : item.OM}
+          title={item.OM === 'Managed devices' ? 'Servidor' : (item.OM === '4CTA-2' ? '4CTA' : item.OM)}
           qtd={item['qtd licencas']}
         />);
       });
