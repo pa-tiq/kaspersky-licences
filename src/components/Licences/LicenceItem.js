@@ -86,12 +86,20 @@ function LicenceItem(props){
     </h2>
   );
 
+  let disponibilizada = ( <></>  );
+
+  if(qtdDisponibilizada > 0){
+    disponibilizada = (
+<div className='expense-item__price'>{`Qtd Disponibilizada: ${qtdDisponibilizada}`}</div>
+    );
+  }
+
   return (
     <li>
       <Card className='expense-item'>
         <div className='expense-item__description'>      
             {editTitleOnDoubleClick}            
-            {qtdDisponibilizada > 0 ?? <div className='expense-item__price'>{`Qtd Disponibilizada: ${qtdDisponibilizada}`}</div>}
+            {disponibilizada}
             <div className='expense-item__price'>{props.qtd}</div>
         </div>
       </Card>
