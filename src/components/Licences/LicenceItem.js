@@ -43,13 +43,6 @@ function LicenceItem(props){
     });
   },[title]);
 
-  qtd_licencas.forEach((item)=>{
-    console.log(item.om,props.title);
-    if(item.om === props.title){        
-      setQtdDisponibilizada(item.qtd);
-    }
-  });
-
   useEffect(() => {
     if(inputForm.current) inputForm.current.focus();
   },[edit]);  
