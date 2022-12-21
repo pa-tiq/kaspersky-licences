@@ -41,13 +41,18 @@ function LicenceItem(props){
         setQtdDisponibilizada(item.qtd);
       }
     });
-    setTitle(props.title);
   },[title]);
+
+  qtd_licencas.forEach((item)=>{
+    console.log(item.om,props.title);
+    if(item.om === props.title){        
+      setQtdDisponibilizada(item.qtd);
+    }
+  });
 
   useEffect(() => {
     if(inputForm.current) inputForm.current.focus();
-  },[edit]);
-  
+  },[edit]);  
 
   function showEditor(e){
     setEdit({
