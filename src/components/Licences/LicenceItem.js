@@ -35,10 +35,11 @@ function LicenceItem(props){
   const inputForm = useRef(null);
 
   useEffect(() => {
-    qtd_licencas.forEach((item)=>{
-      console.log(item.om,props.title);
-      if(item.om === props.title){        
+    qtd_licencas.forEach((item)=>{      
+      if(item.om === props.title){     
+        console.log(item.om,props.title);   
         setQtdDisponibilizada(item.qtd);
+        return;
       }
     });
   },[title]);
