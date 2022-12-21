@@ -23,7 +23,7 @@ const qtd_licencas = [
   { om:"1BCOMGESL" , qtd:82 },
   { om:"CIGS", qtd:39 },
   { om:"CMM"  , qtd:400},
-  { om:"12CGCFE", qtd:62 },
+  { om:"12CGCFEX", qtd:62 },
 ]
 
 function LicenceItem(props){
