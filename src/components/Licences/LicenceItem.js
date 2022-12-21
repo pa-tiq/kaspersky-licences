@@ -42,7 +42,7 @@ function LicenceItem(props){
       }
     });
     setTitle(props.title);
-  },[props.title]);
+  },[]);
 
   useEffect(() => {
     if(inputForm.current) inputForm.current.focus();
