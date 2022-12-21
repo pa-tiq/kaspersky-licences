@@ -36,8 +36,8 @@ function LicenceItem(props){
 
   useEffect(() => {
     qtd_licencas.forEach((item)=>{
-      if(item.om === props.title){
-        console.log(item.om,props.title);
+      console.log(item.om,props.title);
+      if(item.om === props.title){        
         setQtdDisponibilizada(item.qtd);
       }
     });
