@@ -48,12 +48,6 @@ function LicenceItem(props){
     if(inputForm.current) inputForm.current.focus();
   },[edit]);  
 
-  function showEditor(e){
-    setEdit({
-      item: e.target.id,
-    });
-  }
-
   function handleSubmit(e){
     e.preventDefault();
     const input = e.target.firstChild.value;

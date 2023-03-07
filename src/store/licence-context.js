@@ -1,23 +1,44 @@
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import useHttp from '../hooks/use-http';
 
 export const LicenceContext = createContext({
-  licences: [],
+  licences183: [],
+  licences184: [],
   isLoading: false,
   error: null,
-  fetchLicences: async () => {},
+  fetchLicences183: async () => {},
+  fetchLicences184: async () => {},
 });
 
 const LicenceContextProvider = (props) => {
   const httpObj = useHttp();
-  const [licences, setLicences] = useState([]);
+  const [licences183, setLicences183] = useState([]);
+  const [licences184, setLicences184] = useState([]);
 
-  const fetchLicences = async () => {
+  useEffect(() => {
+    async function getLicences() {
+      await fetchLicences184();
+      await fetchLicences183();
+    }
+    getLicences();
+  }, []);
+
+  const fetchLicences183 = async () => {
     const requestConfig = {
-      url: 'http://10.78.108.184:8080/licences',
+      url: 'http://10.78.108.190:8080/licences/183',
     };
     const updateLicences = (newFiles) => {
-      setLicences(newFiles.recordset);
+      setLicences183(newFiles);
+    };
+    httpObj.sendRequest(requestConfig, updateLicences);
+  };  
+  
+  const fetchLicences184 = async () => {
+    const requestConfig = {
+      url: 'http://10.78.108.190:8080/licences/184',
+    };
+    const updateLicences = (newFiles) => {
+      setLicences184(newFiles);
     };
     httpObj.sendRequest(requestConfig, updateLicences);
   };
@@ -25,10 +46,12 @@ const LicenceContextProvider = (props) => {
   return (
     <LicenceContext.Provider
       value={{
-        licences: licences,
+        licences183: licences183,
+        licences184: licences184,
         isLoading: httpObj.isLoading,
         error: httpObj.error,
-        fetchLicences: fetchLicences,
+        fetchLicences183: fetchLicences183,
+        fetchLicences184:fetchLicences184
       }}
     >
       {props.children}

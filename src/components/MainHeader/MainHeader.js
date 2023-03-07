@@ -44,7 +44,7 @@ const MainHeader = () => {
 
   return (
     <header className={classes.header}>
-      <h1>Licenças Kaspersky Manaus Instaladas</h1>
+      <h3>Licenças Kaspersky</h3>
     </header>
   );
 };
