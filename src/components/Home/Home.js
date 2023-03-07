@@ -39,7 +39,7 @@ const Home = () => {
   return (
     <section className={classes.homepage}>
       <div className={classes.home}>
-        <Center V H>
+        <Center H>
           <Table data={data183} title={'OMs fora de Manaus'} align={'left'} />
           <Table data={data184} title={'OMs em Manaus'} align={'right'} />
         </Center>

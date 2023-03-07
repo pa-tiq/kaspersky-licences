@@ -5,7 +5,8 @@ const StyledTable = styled.table`
   caption-side: top;
   border: none;
   border-collapse: collapse;
-
+  margin-left: 1rem;
+  margin-right: 1rem;
 
   /* border-collapse: separate; */
   /* border-spacing: 5px 10px; */
