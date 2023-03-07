@@ -8,6 +8,7 @@ export const CenterV = css`
 export const CenterH = css`
   display: flex;
   justify-content: center;
+  align-items: baseline;
 `;
 
 export const CenterVH = css`

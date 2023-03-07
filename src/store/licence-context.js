@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from 'react';
 import useHttp from '../hooks/use-http';
+import { wait } from '../util/wait';
 
 export const LicenceContext = createContext({
   licences183: [],
@@ -12,13 +13,21 @@ export const LicenceContext = createContext({
 
 const LicenceContextProvider = (props) => {
   const httpObj = useHttp();
+  const [isLoading, setIsLoading] = useState(false);
   const [licences183, setLicences183] = useState([]);
   const [licences184, setLicences184] = useState([]);
 
   useEffect(() => {
     async function getLicences() {
-      await fetchLicences184();
-      await fetchLicences183();
+      setIsLoading(true);
+      fetchLicences183().then(() => {
+        console.log('fetched 183');
+        wait(500).then(() => {
+          console.log('fetched 184');
+          fetchLicences184();
+          setIsLoading(false);
+        });
+      });
     }
     getLicences();
   }, []);
@@ -31,8 +40,8 @@ const LicenceContextProvider = (props) => {
       setLicences183(newFiles);
     };
     httpObj.sendRequest(requestConfig, updateLicences);
-  };  
-  
+  };
+
   const fetchLicences184 = async () => {
     const requestConfig = {
       url: 'http://10.78.108.190:8080/licences/184',
@@ -48,10 +57,10 @@ const LicenceContextProvider = (props) => {
       value={{
         licences183: licences183,
         licences184: licences184,
-        isLoading: httpObj.isLoading,
+        isLoading: httpObj.isLoading || isLoading,
         error: httpObj.error,
         fetchLicences183: fetchLicences183,
-        fetchLicences184:fetchLicences184
+        fetchLicences184: fetchLicences184,
       }}
     >
       {props.children}

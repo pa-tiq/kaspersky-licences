@@ -3,45 +3,65 @@ import { LicenceContext } from '../../store/licence-context';
 import Table from '../Table/Table';
 import classes from './Home.module.css';
 import { Center } from '../Center/Center';
+import LoadingSpinner from '../UI/LoadingSpinner/LoadingSpinner';
 
-const Home = () => {  
+const prepareData = (data, server) => {
+  let newData = data;
+
+  (server === '184' ? hosts_184 : hosts_183).forEach((host) => {
+    let found = false;
+    newData.map((item) => {
+      if (item['OM'] === host.OM) {
+        found = true;
+        item['Ativas/Disponibilizadas'] =
+          item['qtd_licencas'] + '/' + host.hosts;
+        item['Progresso'] =
+          (parseFloat(item['qtd_licencas'] / host.hosts) * 100).toFixed(0);
+        delete item['qtd_licencas'];
+        item['OM'] = host.sigla;
+      }
+    });
+    if (!found){
+      newData.push({'OM':host.sigla, 'Ativas/Disponibilizadas':'0/'+host.hosts, 'Progresso':'0'})
+    }
+  });
+  return newData;
+}
+
+const Home = () => {
   const licenceContext = useContext(LicenceContext);
   const { licences184 } = licenceContext;
   const { licences183 } = licenceContext;
-  const [ data184, setData184 ] = useState([]);
-  const [ data183, setData183 ] = useState([]);
+  const [data184, setData184] = useState([]);
+  const [data183, setData183] = useState([]);
 
-  useEffect(()=>{
-    const licences = licences184;
-    licences.map((item)=>{
-      if(item['OM'] === '4CTA-2'){
-        item['OM'] = '4CTA';
-      }      
-      qtd_disponibilizada.forEach((dis)=>{
-        if(item['OM'] === dis.om){
-          item['Ativas/Disponibilizadas'] = item['qtd_licencas']+'/'+dis.qtd;
-          item['Progresso'] = (parseFloat(item['qtd_licencas']/dis.qtd) * 100).toFixed(0) + '%';
-          delete(item['qtd_licencas']);
-        }
-      });
-      
-    });
-    const licences_filtered = licences.filter((item)=> (
-      item['OM'] !== 'WORKGROUP'
-    ))
+  useEffect(() => {
+    const licences = prepareData(licences184, '184');
+    const licences_filtered = licences.filter(
+      (item) => item['OM'] !== 'WORKGROUP'
+    );
     setData184(licences_filtered);
-  },[licences184]);
+  }, [licences184]);
 
-  useEffect(()=>{
-    setData183(licences183);
-  },[licences183])
+  useEffect(() => {
+    const licences = prepareData(licences183, '183');
+    setData183(licences);
+  }, [licences183]);
+
+  if (licenceContext.isLoading) {
+    return (
+      <div className={classes.centered}>
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   return (
     <section className={classes.homepage}>
       <div className={classes.home}>
         <Center H>
-          <Table data={data183} title={'OMs fora de Manaus'} align={'left'} />
-          <Table data={data184} title={'OMs em Manaus'} align={'right'} />
+          <Table data={data184} mainTitle={'OMs em Manaus'} />
+          <Table data={data183} mainTitle={'OMs fora de Manaus'}  />
         </Center>
       </div>
     </section>
@@ -50,26 +70,65 @@ const Home = () => {
 
 export default Home;
 
-const qtd_disponibilizada = [
-  { om:"4CTA", qtd:60 },
-  { om:"12BSUP", qtd:152},
-  { om:"12RM", qtd:285},
-  { om:"HMAM", qtd:264},
-  { om:"CECMA", qtd:133},
-  { om:"CRO12"  , qtd:116},
-  { om:"4CGEO"  , qtd:175},
-  { om:"3CIAFESP", qtd:142},
-  { om:"2GPTE"  , qtd:162},
-  { om:"Cia C CMA" , qtd:31 },
-  { om:"7BPE", qtd:38 },
-  { om:"12GAAAESL" , qtd:60 },
-  { om:"CMA"  , qtd:268},
-  { om:"4BIM", qtd:73 },
-  { om:"PQRMNT12", qtd:137},
-  { om:"1BIS", qtd:185},
-  { om:"4BAVEX", qtd:160},
-  { om:"1BCOMGESL" , qtd:82 },
-  { om:"CIGS", qtd:39 },
-  { om:"CMM"  , qtd:400},
-  { om:"12CGCFEX", qtd:62 },
-]
+const hosts_184 = [
+  { sigla: '12º B SUP', OM: '12BSUP', hosts: 152 },
+  { sigla: '12ª CGCFEx', OM: '12CGCFEX', hosts: 62 },
+  { sigla: '12º GAAAESL', OM: '12GAAAESL', hosts: 60 },
+  { sigla: '12ª RM', OM: '12RM', hosts: 285 },
+  { sigla: '1º B COM SL', OM: '1BCOMGESL', hosts: 82 },
+  { sigla: '1º BIS', OM: '1BIS', hosts: 185 },
+  { sigla: '3ª CIA F ESP', OM: '3CIAFESP', hosts: 142 },
+  { sigla: '2º GPT E', OM: '2GPTE', hosts: 162 },
+  { sigla: '4º B AV EX', OM: '4BAVEX', hosts: 160 },
+  { sigla: '4º C GEO', OM: '4CGEO', hosts: 175 },
+  { sigla: '4º CTA', OM: '4CTA-2', hosts: 48 },
+  { sigla: '7º BPE', OM: '7BPE', hosts: 40 },
+  { sigla: 'CECMA', OM: 'CECMA', hosts: 133 },
+  { sigla: 'CIGS', OM: 'CIGS', hosts: 39 },
+  { sigla: 'CMA', OM: 'CMA', hosts: 268 },
+  { sigla: 'CMM', OM: 'CMM', hosts: 400 },
+  { sigla: 'CRO/12', OM: 'CRO12', hosts: 116 },
+  { sigla: 'HMAM', OM: 'HMAM', hosts: 264 },
+  { sigla: 'PQ R MNT/12', OM: 'PQRMNT12', hosts: 137 },
+];
+
+const hosts_183 = [
+  { sigla: '3º BIS', OM: '3BIS', hosts: 80 },
+  { sigla: '6º BIS', OM: '6BIS', hosts: 68 },
+  { sigla: '61º BIS', OM: '61BIS', hosts: 68 },
+  { sigla: '54º BIS', OM: '54BIS', hosts: 80 },
+  { sigla: '7º BEC', OM: '7BEC', hosts: 180 },
+  { sigla: '4º BIS', OM: '4BIS', hosts: 80 },
+  { sigla: 'HGUT', OM: 'HGUT', hosts: 80 },
+  { sigla: '8º BIS', OM: '8BIS', hosts: 80 },
+
+  { sigla: '34º PEL PE', OM: '34PELPE', hosts: 2 },
+  { sigla: '17º BIS', OM: '17BIS', hosts: 50 },
+  { sigla: '16ª BALOG', OM: '16BALOG', hosts: 47 },
+  { sigla: 'PMGU/TEFÉ', OM: 'PMGUTEFE', hosts: 23 },
+  { sigla: '16ª BDA IN FSL', OM: '16BDAINFSL', hosts: 100 },
+
+  { sigla: '10º GAC SL', OM: '10GACSL', hosts: 100 },
+  { sigla: 'FTLOGHUM(BOA VISTA)', OM: 'FTLOGHUM', hosts: 233 },
+  { sigla: '12º ESQDCMEC', OM: '12ESQCMEC', hosts: 43 },
+  { sigla: '7º BIS', OM: '7BIS', hosts: 80 },
+  { sigla: '6º BEC', OM: '6BEC', hosts: 171 },
+  { sigla: '1º BLOG SL', OM: '1BLOGSL', hosts: 96 },
+  { sigla: '1ª BDA INF SL', OM: '1BDAINFSL', hosts: 180 },
+
+  { sigla: '21ª CIAECNST', OM: '21CIAECNST', hosts: 81 },
+  { sigla: '5º BIS', OM: '5BIS', hosts: 80 },
+  { sigla: '2º BLOGSL', OM: '2BLOGSL', hosts: 30 },
+  { sigla: 'CIA C 2ª BDA INF SL', OM: 'CIAC2BDAINFSL', hosts: 21 },
+  { sigla: '22º PEL PE', OM: '22PELPE', hosts: 9 },
+  { sigla: '2º PEL COM SL', OM: '2PELCOMSL', hosts: 21 },
+  { sigla: 'HGUSGC', OM: 'HGUSGC', hosts: 80 },
+  { sigla: '2ª BDA INF SL', OM: '2BDAINFSL', hosts: 179 },
+
+  { sigla: '17º BLOGSL', OM: '17BLOGSL', hosts: 30 },
+  { sigla: '17ª CIA INF SL', OM: '17CIAINFSL', hosts: 54 },
+  { sigla: '17º PEL COM SL', OM: '17PELCOMSL', hosts: 50 },
+  { sigla: '5º BEC', OM: '5BEC', hosts: 180 },
+  { sigla: 'HGUPV', OM: 'HGUPV', hosts: 227 },
+  { sigla: '17ª BDA INF SL', OM: '17BDAINFSL', hosts: 180 },
+];

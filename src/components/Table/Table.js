@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import ProgressBar from '../ProgressBar/ProgressBar';
 
 const StyledTable = styled.table`
   caption-side: top;
@@ -11,7 +12,7 @@ const StyledTable = styled.table`
   /* border-collapse: separate; */
   /* border-spacing: 5px 10px; */
 
-  caption-side: bottom;
+  caption-side: top;
   /* empty-cell: show | hide;  */
   /* empty-cell is a property of table or the cells themselves */
 
@@ -30,7 +31,7 @@ const StyledTable = styled.table`
   th {
     border: 1px solid;
   } */
-
+  th,
   td {
     padding: 5px 10px;
   }
@@ -55,25 +56,23 @@ const StyledTable = styled.table`
     font-weight: bold;
   }
 `;
-export default ({ data, title, align }) => {
+export default ({ data, mainTitle }) => {
   if (data.length > 0) {
-    return <Table title={title} align={align} titles={Object.keys(data[0])} data={data} />;
+    return (
+      <Table mainTitle={mainTitle} titles={Object.keys(data[0])} data={data} />
+    );
   } else {
     return <></>;
   }
 };
-const Table = ({ title, align, titles, data }) => (
-  <StyledTable align={align}>
-    <caption>OMs de Manaus</caption>
+const Table = ({ mainTitle, titles, data }) => (
+  <StyledTable>
+    <caption style={{ color: 'white' }}>{mainTitle}</caption>
     <colgroup>
       <col />
       <col />
       <col />
     </colgroup>
-    <thead style={{color:'white'}}>
-      {title}
-    </thead>
-
     <thead>
       <tr>
         {titles.map((title, index) => (
@@ -84,9 +83,18 @@ const Table = ({ title, align, titles, data }) => (
     <tbody>
       {data.map((item, index) => (
         <tr key={index}>
-          {titles.map((title, index) => (
-            <td key={index}>{item[title]}</td>
-          ))}
+          {titles.map((title, index) => {
+            if (title === 'Progresso') {
+              const percentage = item[title];
+              return (
+                <td key={index}>
+                  <ProgressBar bgcolor={'#14ea50'} completed={percentage} />
+                </td>
+              );
+            } else {
+              return <td key={index}>{item[title]}</td>;
+            }
+          })}
         </tr>
       ))}
     </tbody>
