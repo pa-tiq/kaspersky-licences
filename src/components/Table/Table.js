@@ -33,10 +33,12 @@ const StyledTable = styled.table`
   } */
   th,
   td {
-    padding: 5px 10px;
+    padding: 2px 5px;
   }
 
   tbody tr {
+    font-size: 0.7em;
+    font-weight: bold;
     background-color: #c8c1c1;
     :nth-of-type(odd) {
       background-color: #efefef;
@@ -47,6 +49,7 @@ const StyledTable = styled.table`
   }
 
   thead > tr {
+    font-size: 0.9em;
     background-color: #827b7b;
     padding: 5px 10px;
   }
