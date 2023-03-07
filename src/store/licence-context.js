@@ -21,11 +21,10 @@ const LicenceContextProvider = (props) => {
     async function getLicences() {
       setIsLoading(true);
       fetchLicences183().then(() => {
-        console.log('fetched 183');
         wait(500).then(() => {
-          console.log('fetched 184');
           fetchLicences184();
           setIsLoading(false);
+
         });
       });
     }
