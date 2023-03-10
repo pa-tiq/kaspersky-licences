@@ -77,7 +77,7 @@ const hosts_184 = [
   { sigla: '12ª RM', OM: '12RM', hosts: 285 },
   { sigla: '1º B COM SL', OM: '1BCOMGESL', hosts: 82 },
   { sigla: '1º BIS', OM: '1BIS', hosts: 185 },
-  { sigla: '3ª CIA F ESP', OM: '3CIAFESP', hosts: 142 },
+  { sigla: '3ª CIA F ESP', OM: '3CIAFESP', hosts: 65 },
   { sigla: '2º GPT E', OM: '2GPTE', hosts: 162 },
   { sigla: '4º B AV EX', OM: '4BAVEX', hosts: 160 },
   { sigla: '4º C GEO', OM: '4CGEO', hosts: 175 },
